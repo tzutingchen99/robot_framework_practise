@@ -44,9 +44,29 @@ robot --variablefile variables/env_practice.py --include smoke --outputdir resul
 pabot --processes 2 --testlevelsplit --variablefile variables/env_practice.py \
       --exclude requires-device --outputdir results tests/
 
-# App 測試：先啟動 emulator 與 Appium server（appium --port 4723）
+# App 測試：先啟動 emulator 與 Appium server（見下方「App 測試環境建置」）
 robot --variablefile variables/env_practice.py --include requires-device --outputdir results tests/app
 ```
+
+## App 測試環境建置
+
+App 測試（`tests/app/`）需要本機額外環境，尚未建置前 CI 與本機都用 `--exclude requires-device` 跳過。
+
+1. **Android SDK + Emulator**：裝 [Android Studio](https://developer.android.com/studio)，用內建 Device Manager 建一台 AVD 並啟動。設好環境變數 `ANDROID_HOME`（SDK 路徑），並把 `%ANDROID_HOME%\platform-tools` 加進 PATH
+2. **Node.js**：Appium server 跑在 Node 上，從 [nodejs.org](https://nodejs.org) 裝 LTS 版
+3. **Appium server + driver**：
+   ```bash
+   npm install -g appium
+   appium driver install uiautomator2
+   ```
+4. **確認裝置連上**：`adb devices` 應列出 emulator（預設 `emulator-5554`，若不同就改 `variables/env_practice.py` 的 `deviceName`）
+5. **啟動 server 後執行**：
+   ```bash
+   appium --port 4723
+   robot --variablefile variables/env_practice.py --include requires-device --outputdir results tests/app
+   ```
+
+冒煙案例用系統內建的設定 app（`com.android.settings`）驗證環境接通，不需要準備 apk；之後要測自家 app 就把 `ANDROID_CAPS` 的 `appPackage` / `appActivity` 換掉，或改用 `app` capability 指向 apk 路徑。iOS 需要 macOS + Xcode（XCUITest driver），Windows 環境先不列。
 
 ## 壓力測試
 
