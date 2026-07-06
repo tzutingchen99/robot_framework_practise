@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 22 * * *"   # 每日 06:00 (UTC+8) 回歸
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 全部 suite 先 dry-run：抓語法錯誤與 keyword 解析問題，不需要裝置
+      - name: Dry run all suites
+        run: |
+          robot --dryrun --variablefile variables/env_practice.py \
+                --outputdir results/dryrun tests/
+
+      # 實跑 API + Web（headless chrome，ubuntu runner 內建 chrome）
+      # app 需要實機/模擬器，用 tag 排除
+      - name: Run API and Web tests (pabot)
+        run: |
+          pabot --processes 2 --testlevelsplit \
+                --variablefile variables/env_practice.py \
+                --exclude requires-device \
+                --outputdir results tests/
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-reports
+          path: results/

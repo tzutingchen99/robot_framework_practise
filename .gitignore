@@ -1,18 +1,28 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
 
-# Other files and folders
+# Robot Framework outputs
+results/
+output.xml
+log.html
+report.html
+selenium-screenshot-*.png
+pabot_results/
+.pabotsuitenames
+
+# Locust
+*.csv
+locust_report*.html
+
+# IDE
+.idea/
+.vscode/
 .settings/
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# OS
+.DS_Store
+Thumbs.db

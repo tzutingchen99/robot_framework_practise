@@ -1,0 +1,7 @@
+# 鎖定版本 = 2026-07-06 於 Python 3.14 實際安裝驗證過的組合
+robotframework==7.4.2
+robotframework-seleniumlibrary==6.9.0
+robotframework-requests==0.9.7
+robotframework-appiumlibrary==3.2.1
+robotframework-pabot==5.2.2
+locust==2.44.4
