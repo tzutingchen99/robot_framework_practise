@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Init Browser Library (Playwright chromium)
+        run: rfbrowser init chromium
+
       # 全部 suite 先 dry-run：抓語法錯誤與 keyword 解析問題，不需要裝置
       - name: Dry run all suites
         run: |

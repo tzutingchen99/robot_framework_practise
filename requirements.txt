@@ -4,4 +4,5 @@ robotframework-seleniumlibrary==6.9.0
 robotframework-requests==0.9.7
 robotframework-appiumlibrary==3.2.1
 robotframework-pabot==5.2.2
+robotframework-browser==20.0.0
 locust==2.44.4

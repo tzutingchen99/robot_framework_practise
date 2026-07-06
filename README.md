@@ -9,6 +9,7 @@ variables/            環境設定（URL、帳號、capabilities），--variable
 resources/            keywords 分層：common + web / api / app
 tests/
   web/                SeleniumLibrary（對象：saucedemo 練習站）
+  web_playwright/     Browser Library（Playwright 引擎），案例與 web/ 一對一對應供並排比較
   api/                RequestsLibrary（對象：restful-booker 練習服務）
   app/                AppiumLibrary 骨架（需 Appium server + emulator）
 load/                 Locust 壓測腳本
@@ -22,6 +23,7 @@ docs/                 架構審查報告
 python -m venv .venv
 .venv\Scripts\activate        # Windows；macOS/Linux 用 source .venv/bin/activate
 pip install -r requirements.txt
+rfbrowser init chromium       # Browser Library 初始化（需 Node.js，下載 Playwright chromium）
 ```
 
 ## 執行
@@ -34,6 +36,9 @@ robot --variablefile variables/env_practice.py --outputdir results tests/api
 
 # Web 測試（headless chrome；要看畫面把 env_practice.py 的 HEADLESS 改 False）
 robot --variablefile variables/env_practice.py --outputdir results tests/web
+
+# Web 測試 Browser Library 版（同一批案例的 Playwright 實作，供並排比較）
+robot --variablefile variables/env_practice.py --outputdir results tests/web_playwright
 
 # 只跑冒煙
 robot --variablefile variables/env_practice.py --include smoke --outputdir results tests/
@@ -84,6 +89,7 @@ locust -f load/locustfile.py --host https://restful-booker.herokuapp.com \
 | `smoke` | 冒煙：最小健康檢查集合 |
 | `regression` | 回歸：完整功能驗證 |
 | `web` / `api` / `app` | 平台別（suite 層以 `Test Tags` 統一標） |
+| `playwright` | Browser Library 實作的 web 案例（`web` tag 之外的細分） |
 | `requires-device` | 需要實機/模擬器，CI 排除 |
 
 ## 測試對象
